@@ -1,0 +1,85 @@
+<html lang="en-us" id="top">
+    <head>
+        <title>${page.title}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <base href="${page.base}">
+        <link rel="stylesheet" type="text/css" href="${page.stylesheet}">
+        <link rel="stylesheet" type="text/css" href="${page.navstyle}">
+        <link rel="icon" type="image/png" href="${document.icon}">
+
+        <style>
+            article {
+                max-width: 80em;
+            }
+
+            div.theader {
+                margin-right: 1.1%;
+            }
+
+            div.tbody {
+                height: 60px;
+                overflow-y: scroll;
+            }
+
+            col.id {
+                width: 40px;
+            }
+
+            col.Title {
+                width: 400px;
+            }
+
+            col.Studio {
+                width: 75px;
+            }
+
+            col.Versions {
+                width: 70px;
+            }
+
+            col.Rating {
+                width: 60px;
+            }
+
+            col.Year {
+                width: 50px;
+            }
+
+            col.Genre {
+                width: 100px;
+            }
+
+            col.Status {
+                width: 85px;
+            }
+
+            col.Sound {
+                width: 55px;
+            }
+
+            col.Price {
+                width: 50px;
+            }
+
+            col.Aspect {
+                width: 55px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <article>
+            <header>
+                <p>${document.title}</p>
+                ${page.navbar}
+            </header>
+            ${page.content}
+            <footer id="bottom">
+                <hr>
+                ${document.copyright}<br>
+                Last updated: ${system.date}
+            </footer>
+        </article>
+    </body>
+</html>
