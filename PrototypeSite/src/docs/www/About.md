@@ -33,6 +33,6 @@ title: About | ${document.name}
 [About]:About.html
 [Home]:index.html
 [License]:LICENSE.html
-[Movie Search]:Search.html
-[Top Ten]:TopTen.html
+[Movie Search]:Search.php
+[Top Ten]:TopTen.php
 @@@

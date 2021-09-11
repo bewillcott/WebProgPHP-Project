@@ -372,6 +372,10 @@ sup {
     color: red;
 }
 
+.left {
+    text-align: left;
+}
+
 .quote {
     font-style: italic;
 }
