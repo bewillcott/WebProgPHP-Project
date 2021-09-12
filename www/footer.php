@@ -41,5 +41,5 @@ echo ''
  . '                <hr>' . "\n"
  . '                Copyright © 2021 <a href="mailto:bw.opensource@yahoo.com">'
  . 'Bradley Willcott</a><br>' . "\n"
- . '                Last updated: Sat Sep 11 20:25:23 AWST 2021' . "\n"
+ . '                Last updated: Sun Sep 12 18:33:43 AWST 2021' . "\n"
  . '            </footer>' . "\n";

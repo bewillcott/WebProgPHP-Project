@@ -30,8 +30,9 @@
  * @package   Charting
  * @author    Bradley Willcott <bw.opensource@yahoo.com>
  * @copyright 2021 Bradley Willcott
- * @license   https://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
- * @version   Release: v1.0
+ * @license   https://www.gnu.org/licenses/gpl-3.0.txt GNU General
+ *            Public License Version 3
+ * @version   GIT: v1.0
  * @link      BarChart This class
  */
 require_once './BarChart.php';
@@ -39,19 +40,20 @@ $arr = array();
 $x_ticks = array();
 
 $width = filter_has_var(INPUT_GET, "width") ? filter_input(INPUT_GET, "width") : 400;
-$height = filter_has_var(INPUT_GET, "height") ? filter_input(INPUT_GET, "height") : 300;
+$height = filter_has_var(INPUT_GET, "height") ? filter_input(
+    INPUT_GET, "height"
+) : 300;
+$data = filter_has_var(INPUT_GET, "data") ? filter_input(INPUT_GET, "data") : false;
+
+if (!empty($data)) {
+    $data = explode(",", $data);
+}
 
 // initialize the array
 for ($index = 0, $value = 10; $index < 10; $index++, $value--) {
-    $arr[$index] = $value;
+    $arr[$index] = !empty($data) ? $data[$index] : $value;
     $x_ticks[$index] = $index + 1;
 }
-
-// process 100 random integers: 1 to 10 (inclusively)
-//for ($index = 0; $index < 100; $index++) {
-//    $int = random_int(1, 10);
-//    $arr[$int - 1]++;
-//}
 
 $year = date("Y");
 
@@ -60,12 +62,12 @@ $png->setFontFilename("fonts/LiberationSans-Regular.ttf")
     ->setTitle("Web Programming PHP - Project", 14)
     ->setSubTitle("Top Ten Movies", 12)
     ->setXAxisTitle("Movie List #", 10)
-    ->setYAxisTitle("Search Result", 10)
+    ->setYAxisTitle("Search Result (%)", 10)
     ->setFooter("Copyright © {$year} Bradley Willcott (M198449)", 8)
     ->setBackgroundColour(0, 255, 150)
     ->setGraphBackgroundColour(128, 255, 255)
     ->setHorizontalGridLinesColour(200, 200, 200)
     ->setBarFillColour(172, 57, 0)
     ->setXAxisTicks($x_ticks)
-    ->setYAxisTicks(1, true)
+    ->setYAxisTicks(true)
     ->draw($width, $height);

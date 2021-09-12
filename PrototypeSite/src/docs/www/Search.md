@@ -28,6 +28,7 @@ title: Movie Search | ${document.name}
             $sql_select = "SELECT * FROM `Movies` ";
             $sql_update = "UPDATE `Movies` SET `SearchResult`=`SearchResult` + 1 ";
             $sql_where = "WHERE";
+            $first = true;
 
             if (!empty($_POST)) {
                 $vars_arr = filter_input_array(INPUT_POST);
@@ -35,8 +36,6 @@ title: Movie Search | ${document.name}
                 $genre = $vars_arr["genre"];
                 $rating = $vars_arr["rating"];
                 $year = $vars_arr["year"];
-
-                $first = true;
 
                 if (!empty($year)) {
                     $first = false;
@@ -107,7 +106,12 @@ title: Movie Search | ${document.name}
             /* Set the desired charset after establishing a connection */
             $mysqli->set_charset('utf8mb4');
 
-            $mysqli->query($sql_update);
+            // If a specific selection has been made,
+            // then update the 'SearchResult' counters.
+            if (!$first) {
+                $mysqli->query($sql_update);
+            }
+
             $result = $mysqli->query($sql_select);
             $num_rows = $mysqli->affected_rows;
             $genre_list = $mysqli->query("SELECT DISTINCT `Genre` FROM `Movies`;");
@@ -116,6 +120,7 @@ title: Movie Search | ${document.name}
             $alt = false;
             ?>
 ```
+
 
 <table class="centre" >
     <tr>
@@ -152,7 +157,7 @@ title: Movie Search | ${document.name}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="nopadding"></td>
+                                    <td class="nopadding">(examples)</td>
                                     <td class="left nopadding">
                                         <label>- containing "night":</label>
                                     </td>
@@ -221,15 +226,17 @@ title: Movie Search | ${document.name}
                                     . ">{$row['Year']}</option>";
                                 }
                                 echo "\n";
-night                                ?>
+                                ?>
                             </select>
                         </td>
                     </tr>
                 </table>
                 <table class="hidden">
                     <tr>
-                        <td style="text-align: left; width: 81%">
-                            <?php echo $num_rows; ?> movies found.
+                        <td style="text-align: left; width: 80%">
+                            <b><?php 
+                            echo $num_rows . ' movie' . ($num_rows != 1 ? 's ' : ' ') . "found.\n";
+                                ?></b>
                         </td>
                         <td style="text-align: right">
                             <input type="submit" value="Search">
@@ -252,7 +259,7 @@ night                                ?>
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    inputs[i].checked = false;   
+                                    inputs[i].checked = false;
                             }
                         }
 
@@ -334,7 +341,7 @@ night                                ?>
             <col class="Studio">
             <col class="Status">
             <col class="Sound">
-            <col class="Versions">            
+            <col class="Versions">
             <col class="Price">
             <col class="Rating">
             <col class="Year">
@@ -387,6 +394,7 @@ night                                ?>
         </tbody>
     </table>
 </div>
+
 
 
 

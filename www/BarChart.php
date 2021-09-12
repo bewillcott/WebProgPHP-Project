@@ -30,8 +30,9 @@
  * @package   Charting
  * @author    Bradley Willcott <bw.opensource@yahoo.com>
  * @copyright 2021 Bradley Willcott
- * @license   https://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
- * @version   Release: v1.0
+ * @license   https://www.gnu.org/licenses/gpl-3.0.txt GNU General
+ *            Public License Version 3
+ * @version   GIT: v1.0
  * @link      BarChart This class
  */
 
@@ -44,12 +45,14 @@
  * @category Charting
  * @package  Charting
  * @author   Bradley Willcott <bw.opensource@yahoo.com>
- * @license  https://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
+ * @license  https://www.gnu.org/licenses/gpl-3.0.txt GNU General
+ *           Public License Version 3
  * @version  Release: v1.0
  * @link     BarChart This class
  */
 class BarChart
 {
+
     // The data to gragh
     private $_data_series;
     private $_max_value;
@@ -139,20 +142,21 @@ class BarChart
         $this->_columns = count($data_series);
 
         // Calculate the maximum value we are going to plot
-        $maxv = 0;
-
-        for ($i = 0; $i < $this->_columns; $i++) {
-            $maxv = max($data_series[$i], $maxv);
-        }
-
-        $this->_max_value = $maxv;
+        //        $maxv = 0;
+        //
+        //        for ($i = 0; $i < $this->_columns; $i++) {
+        //            $maxv = max($data_series[$i], $maxv);
+        //        }
+        //
+        $this->_max_value = max($data_series);
         $this->_initGraphSettings();
     }
 
     /**
      * Construct and output the graph to the browser.
      * <p>
-     * This is the main method - it does, or controls, all the work of producing the final image.
+     * This is the main method - it does, or controls, all the work of producing
+     * the final image.
      *
      * @param int $width  of the new image
      * @param int $height of the new image
@@ -187,7 +191,8 @@ class BarChart
      *
      * @return BarChart for method chaining
      */
-    public function setBackgroundColour(int $r = 255, int $g = 255, int $b = 255): BarChart
+    public function setBackgroundColour(int $r = 255, int $g = 255, int $b = 255)
+    : BarChart
     {
         $this->_background = array("r" => $r, "g" => $g, "b" => $b);
 
@@ -204,7 +209,8 @@ class BarChart
      *
      * @return BarChart for method chaining
      */
-    public function setBarFillColour(int $r = 255, int $g = 255, int $b = 255): BarChart
+    public function setBarFillColour(int $r = 255, int $g = 255, int $b = 255)
+    : BarChart
     {
         $this->_bar_fill = array("r" => $r, "g" => $g, "b" => $b);
 
@@ -253,8 +259,9 @@ class BarChart
      *
      * @return BarChart for method chaining
      */
-    public function setGraphBackgroundColour(int $r = 255, int $g = 255, int $b = 255): BarChart
-    {
+    public function setGraphBackgroundColour(
+        int $r = 255, int $g = 255, int $b = 255
+    ): BarChart {
         $this->_graph_background = array("r" => $r, "g" => $g, "b" => $b);
 
         // Build chaining
@@ -270,9 +277,11 @@ class BarChart
      *
      * @return BarChart for method chaining
      */
-    public function setHorizontalGridLinesColour(int $r = 255, int $g = 255, int $b = 255): BarChart
-    {
-        $this->_horizontal_grid_lines_colour = array("r" => $r, "g" => $g, "b" => $b);
+    public function setHorizontalGridLinesColour(
+        int $r = 255, int $g = 255, int $b = 255
+    ): BarChart {
+        $this->_horizontal_grid_lines_colour = array(
+            "r" => $r, "g" => $g, "b" => $b);
 
         // Build chaining
         return $this;
@@ -349,15 +358,15 @@ class BarChart
     /**
      * Set the y-axis ticks divisor.
      *
-     * @param int  $divisor               Y-axis tick divisor
-     * @param bool $horizontal_grid_lines <i>true</i> to display horizontal grid lines<br/>
+     * @param bool $horizontal_grid_lines <i>true</i> to display horizontal grid
+     *                                    lines<br/>
      *                                    (default: false)
      *
      * @return BarChart for method chaining
      */
-    public function setYAxisTicks(int $divisor, bool $horizontal_grid_lines = false): BarChart
+    public function setYAxisTicks(bool $horizontal_grid_lines = false): BarChart
     {
-        $this->_y_axis_ticks = $divisor;
+        $this->_y_axis_ticks = $this->_max_value / 20;
         $this->_graph_padding_left += self::$_graph_padding;
         $this->_horizontal_grid_lines = $horizontal_grid_lines;
 
@@ -407,16 +416,21 @@ class BarChart
             $this->_graph_pos_x + $this->_graph_padding_left,
             $this->_graph_pos_y + $this->_graph_padding_top,
             $this->_graph_pos_x + $this->_graph_padding_left,
-            $this->_graph_pos_y + $this->_graph_padding_top + $this->_max_bar_height + 1,
+            $this->_graph_pos_y + $this->_graph_padding_top +
+                $this->_max_bar_height + 1,
             $this->_graph_axis_lines
         );
         imagesetthickness($this->_image, 1);
 
         if (isset($this->_y_axis_ticks)) {
             $tick = 0;
+            $percent = 0;
+            $inc = 5;
 
-            while ($tick < $this->_max_value) {
+            //            while ($tick < $this->_max_value) {
+            while ($percent < 100) {
                 $tick += $this->_y_axis_ticks;
+                $percent += $inc;
                 $column_height = ($this->_max_bar_height / 100) *
                         (($tick / $this->_max_value) * 100);
                 $tick_y = $this->_bar_baseline - $column_height;
@@ -442,9 +456,10 @@ class BarChart
                 }
 
                 $this->_drawText(
-                    $this->_graph_pos_x + $this->_graph_padding_left - self::$_x_axis_padding - 1,
+                    $this->_graph_pos_x + $this->_graph_padding_left -
+                        self::$_x_axis_padding - 1,
                     $tick_y,
-                    $tick,
+                    $percent,
                     self::$_tick_text_font_size
                 );
             }
@@ -460,7 +475,8 @@ class BarChart
     {
         if (isset($this->_x_axis_title)) {
             $centre_x = $this->_graph_pos_x + $this->_graph_width / 2;
-            $centre_y = $this->_bar_baseline + $this->_graph_padding_bottom - self::$_graph_padding;
+            $centre_y = $this->_bar_baseline + $this->_graph_padding_bottom -
+                    self::$_graph_padding;
 
             $this->_drawText(
                 $centre_x,
@@ -499,31 +515,59 @@ class BarChart
             $column_height = ($this->_max_bar_height / 100) *
                     (($this->_data_series[$i] / $this->_max_value) * 100);
 
-            $x1 = $this->_graph_pos_x + 1 + $this->_graph_padding_left + ($i * $this->_bar_width);
-            $y1 = $this->_graph_pos_y + $this->_graph_padding_top + $this->_max_bar_height - $column_height;
-            $x2 = $this->_graph_pos_x + $this->_graph_padding_left + (($i + 1) * $this->_bar_width) -
-                    self::$_bar_padding;
+            $x1 = $this->_graph_pos_x + 1 + $this->_graph_padding_left +
+                    ($i * $this->_bar_width);
+            $y1 = $this->_graph_pos_y + $this->_graph_padding_top +
+                    $this->_max_bar_height - $column_height;
+            $x2 = $this->_graph_pos_x + $this->_graph_padding_left +
+                    (($i + 1) * $this->_bar_width) - self::$_bar_padding;
 
-            imagefilledrectangle($this->_image, $x1, $y1, $x2, $y2, $this->_bar_fill);
+            imagefilledrectangle(
+                $this->_image, $x1, $y1, $x2, $y2, $this->_bar_fill
+            );
             // This part is just for 3D effect
             // Outer lines
-            imageline($this->_image, $x1, $y1, $x1, $y2, $this->_bar_outer_light); // left
-            imageline($this->_image, $x1, $y1, $x2, $y1, $this->_bar_outer_light); // top
-            imageline($this->_image, $x2, $y1 + 1, $x2, $y2, $this->_bar_outer_dark); // right
+            imageline(
+                $this->_image, $x1, $y1, $x1, $y2, $this->_bar_outer_light
+            ); // left
+            imageline(
+                $this->_image, $x1, $y1, $x2, $y1, $this->_bar_outer_light
+            ); // top
+            imageline(
+                $this->_image, $x2, $y1 + 1, $x2, $y2, $this->_bar_outer_dark
+            ); // right
             // Inner lines
-            imageline($this->_image, $x1 + 1, $y1 + 1, $x1 + 1, $y2 - 1, $this->_bar_inner_light); // left
-            imageline($this->_image, $x1 + 1, $y1 + 1, $x2 - 1, $y1 + 1, $this->_bar_inner_light); // top
-            imageline($this->_image, $x2 - 1, $y1 + 2, $x2 - 1, $y2 - 1, $this->_bar_inner_dark); // right
-            imageline($this->_image, $x1 + 1, $y2 - 1, $x2 - 1, $y2 - 1, $this->_bar_inner_dark); // bottom
+            imageline(
+                $this->_image, $x1 + 1, $y1 + 1, $x1 + 1, $y2 - 1,
+                $this->_bar_inner_light
+            ); // left
+            imageline(
+                $this->_image, $x1 + 1, $y1 + 1, $x2 - 1, $y1 + 1,
+                $this->_bar_inner_light
+            ); // top
+            imageline(
+                $this->_image, $x2 - 1, $y1 + 2, $x2 - 1, $y2 - 1,
+                $this->_bar_inner_dark
+            ); // right
+            imageline(
+                $this->_image, $x1 + 1, $y2 - 1, $x2 - 1, $y2 - 1,
+                $this->_bar_inner_dark
+            ); // bottom
             // X-Axis bar
             imagesetthickness($this->_image, 2);
-            imageline($this->_image, $x1, $y2 + 1, $x2 + self::$_bar_padding, $y2 + 1, $this->_graph_axis_lines);
+            imageline(
+                $this->_image, $x1, $y2 + 1, $x2 + self::$_bar_padding, $y2 + 1,
+                $this->_graph_axis_lines
+            );
             imagesetthickness($this->_image, 1);
 
             // X-Axis ticks
             if (isset($this->_x_axis_ticks)) {
                 $x3 = $x1 + (($x2 - $x1) / 2);
-                imageline($this->_image, $x3, $y2 + 1, $x3, $y2 + 1 + self::$_tick_length, $this->_graph_axis_lines);
+                imageline(
+                    $this->_image, $x3, $y2 + 1, $x3, $y2 + 1 +
+                        self::$_tick_length, $this->_graph_axis_lines
+                );
                 $this->_drawText(
                     $x3,
                     $y2 + 1 + self::$_x_axis_padding,
@@ -577,8 +621,9 @@ class BarChart
      *
      * @return int   height of text box
      */
-    private function _drawText(int $centre_x, int $centre_y, string $text, float $font_size, float $angle = 0): int
-    {
+    private function _drawText(int $centre_x, int $centre_y, string $text,
+        float $font_size, float $angle = 0
+    ): int {
         // Create bounding box
         $bbox = imageftbbox($font_size, $angle, $this->_font_filename, $text);
 
@@ -622,7 +667,8 @@ class BarChart
 
             if (isset($this->_sub_title)) {
                 $centre_x = $width / 2;
-                $centre_y = $this->_padding_top + ($this->_sub_title["font_size"] / 2);
+                $centre_y = $this->_padding_top +
+                        ($this->_sub_title["font_size"] / 2);
                 $this->_padding_top += $this->_drawText(
                     $centre_x,
                     $centre_y,
@@ -637,9 +683,11 @@ class BarChart
             $font_size = $this->_footer["font_size"];
             $bbox = $this->_getTextWidthHeight($text, $font_size);
 
-            $centre_x = $width - $this->_padding_right - $this->_graph_margin_right - ($bbox["width"] / 2);
+            $centre_x = $width - $this->_padding_right -
+                    $this->_graph_margin_right - ($bbox["width"] / 2);
             $centre_y = $height - $this->_padding_bottom - ($bbox["height"] / 2);
-            $this->_padding_bottom += $this->_drawText($centre_x, $centre_y, $text, $font_size);
+            $this->_padding_bottom += $this
+                ->_drawText($centre_x, $centre_y, $text, $font_size);
         }
     }
 
@@ -653,8 +701,9 @@ class BarChart
      *
      * @return array containing "width" and "height"
      */
-    private function _getTextWidthHeight(string $text, float $font_size, float $angle = 0): array
-    {
+    private function _getTextWidthHeight(
+        string $text, float $font_size, float $angle = 0
+    ): array {
         // Create bounding box
         $bbox = imageftbbox($font_size, $angle, $this->_font_filename, $text);
 
@@ -730,24 +779,39 @@ class BarChart
             $blue = $alt;
         }
 
-        $red_inner_light = $red + $inner_lighten < $max ? $red + $inner_lighten : $max;
-        $green_inner_light = $green + $inner_lighten < $max ? $green + $inner_lighten : $max;
-        $blue_inner_light = $blue + $inner_lighten < $max ? $blue + $inner_lighten : $max;
+        $red_inner_light = $red + $inner_lighten < $max ?
+                $red + $inner_lighten : $max;
+        $green_inner_light = $green + $inner_lighten < $max ?
+                $green + $inner_lighten : $max;
+        $blue_inner_light = $blue + $inner_lighten < $max ?
+                $blue + $inner_lighten : $max;
         $red_inner_dark = $red + $inner_darken > 0 ? $red + $inner_darken : 0;
         $green_inner_dark = $green + $inner_darken > 0 ? $green + $inner_darken : 0;
         $blue_inner_dark = $blue + $inner_darken > 0 ? $blue + $inner_darken : 0;
 
-        $red_outer_light = $red + $outer_lighten < $max ? $red + $outer_lighten : $max;
-        $green_outer_light = $green + $outer_lighten < $max ? $green + $outer_lighten : $max;
-        $blue_outer_light = $blue + $outer_lighten < $max ? $blue + $outer_lighten : $max;
+        $red_outer_light = $red + $outer_lighten < $max ?
+                $red + $outer_lighten : $max;
+        $green_outer_light = $green + $outer_lighten < $max ?
+                $green + $outer_lighten : $max;
+        $blue_outer_light = $blue + $outer_lighten < $max ?
+                $blue + $outer_lighten : $max;
         $red_outer_dark = $red + $outer_darken > 0 ? $red + $outer_darken : 0;
-        $green_outer_dark = $green + $outer_darken > 0 ? $green + $outer_darken : 0;
+        $green_outer_dark = $green + $outer_darken > 0 ?
+                $green + $outer_darken : 0;
         $blue_outer_dark = $blue + $outer_darken > 0 ? $blue + $outer_darken : 0;
 
-        $this->_bar_inner_dark = imagecolorallocate($this->_image, $red_inner_dark, $green_inner_dark, $blue_inner_dark);
-        $this->_bar_inner_light = imagecolorallocate($this->_image, $red_inner_light, $green_inner_light, $blue_inner_light);
-        $this->_bar_outer_dark = imagecolorallocate($this->_image, $red_outer_dark, $green_outer_dark, $blue_outer_dark);
-        $this->_bar_outer_light = imagecolorallocate($this->_image, $red_outer_light, $green_outer_light, $blue_outer_light);
+        $this->_bar_inner_dark = imagecolorallocate(
+            $this->_image, $red_inner_dark, $green_inner_dark, $blue_inner_dark
+        );
+        $this->_bar_inner_light = imagecolorallocate(
+            $this->_image, $red_inner_light, $green_inner_light, $blue_inner_light
+        );
+        $this->_bar_outer_dark = imagecolorallocate(
+            $this->_image, $red_outer_dark, $green_outer_dark, $blue_outer_dark
+        );
+        $this->_bar_outer_light = imagecolorallocate(
+            $this->_image, $red_outer_light, $green_outer_light, $blue_outer_light
+        );
 
         $this->_bar_fill = isset($this->_bar_fill) ?
                 imagecolorallocate(
@@ -760,7 +824,9 @@ class BarChart
 
         $this->_graph_axis_lines = $this->_black;
         $this->_text_colour = $this->_black;
-        $this->_horizontal_grid_lines_colour = isset($this->_horizontal_grid_lines_colour) ?
+        $this->_horizontal_grid_lines_colour = isset(
+            $this->_horizontal_grid_lines_colour
+        ) ?
                 imagecolorallocate(
                     $this->_image,
                     $this->_horizontal_grid_lines_colour["r"],
@@ -782,13 +848,16 @@ class BarChart
     {
         // Set the various heights
         $this->_height = $height;
-        $this->_graph_height = $height - ($this->_padding_bottom + $this->_padding_top) -
+        $this->_graph_height = $height - ($this->_padding_bottom +
+                $this->_padding_top) -
                 ($this->_graph_margin_bottom + $this->_graph_margin_top) - 2;
-        $this->_max_bar_height = $this->_graph_height - ($this->_graph_padding_top + $this->_graph_padding_bottom);
+        $this->_max_bar_height = $this->_graph_height - ($this->_graph_padding_top +
+                $this->_graph_padding_bottom);
 
         // Set the various widths
         $this->_width = $width;
-        $this->_graph_width = $width - ($this->_padding_left + $this->_padding_right) -
+        $this->_graph_width = $width -
+                ($this->_padding_left + $this->_padding_right) -
                 ($this->_graph_margin_left + $this->_graph_margin_right) - 2;
         $this->_bar_width = (($this->_graph_width - ($this->_graph_padding_left +
                 $this->_graph_padding_right)) / $this->_columns);
@@ -799,6 +868,7 @@ class BarChart
         $this->_graph_pos_x2 = $this->_graph_pos_x + $this->_graph_width;
         $this->_graph_pos_y2 = $this->_graph_pos_y + $this->_graph_height;
 
-        $this->_bar_baseline = $this->_graph_pos_y + $this->_graph_padding_top + $this->_max_bar_height;
+        $this->_bar_baseline = $this->_graph_pos_y + $this->_graph_padding_top +
+                $this->_max_bar_height;
     }
 }
